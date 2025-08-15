@@ -1,69 +1,113 @@
-# React + TypeScript + Vite
+## React TS Auth with Context API
+This project provides a robust and secure authentication solution for React applications. It leverages TypeScript, the Context API, and a custom useAuth hook to manage user authentication state in a clean and efficient way.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Key Features
+- Global State Management: A custom useAuth hook combined with the Context API makes authentication state (isLoggedIn, user, etc.) accessible to any component in your application. This eliminates prop drilling and simplifies state management.
 
-Currently, two official plugins are available:
+- In-Memory Access Token: The access token is stored securely in memory, which significantly enhances security by preventing it from being stolen via Cross-Site Scripting (XSS) attacks.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- HttpOnly Cookie Refresh Token: The refresh token is stored in a secure HttpOnly cookie. This makes it inaccessible to client-side JavaScript, providing strong protection against XSS and Cross-Site Request Forgery (CSRF) attacks.
 
-## Expanding the ESLint configuration
+## Authentication Flow Illustrated
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```mermaid
+sequenceDiagram
+  participant Client
+  participant AuthAPI
+  Client->>AuthAPI: Đăng nhập (POST /login)
+  AuthAPI->>Client: Trả về AccessToken (in-memory), RefreshToken (HttpOnly Cookie)
+  Client->>AuthAPI: Truy cập API với AccessToken
+  AuthAPI->>Client: Xác thực/Trả dữ liệu
+  Client->>AuthAPI: Refresh AccessToken bằng RefreshToken (cookie)
+  AuthAPI->>Client: Trả AccessToken mới
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Auth API
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+This React application requires a backend API for user authentication. Below are the essential endpoints.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
+-----
+
+### `POST /auth/login`
+
+  * **Description**: This endpoint authenticates a user with their email and password. A successful login returns user details, an **access token**, and sets a secure `HttpOnly` cookie containing the **refresh token**.
+
+  * **Method**: `POST`
+
+  * **Request Body**: A JSON object containing the user's login credentials.
+
+    ```json
+    {
+      "identifier": "z4@gmail.com",
+      "password": "password"
+    }
+    ```
+
+  * **Response**: Returns a JSON object with the user's details and a JWT access token.
+
+      * **Header**: An `HttpOnly` cookie named `refreshToken` is set.
+      * **Body**:
+
+    <!-- end list -->
+
+    ```json
+    {
+      "user": {
+        "id": 16,
+        "email": "z4@gmail.com",
+        "name": "z4",
+        "roles": [
+          "ROLE_USER"
+        ]
       },
-      // other options...
-    },
-  },
-])
-```
+      "accessToken": "jwt_token",
+      "expiresIn": 900
+    }
+    ```
+
+-----
+
+### `POST /auth/refresh`
+
+  * **Description**: This endpoint renews an expired **access token**. It authenticates the request using the **refresh token** stored in the `HttpOnly` cookie and issues a new access token.
+
+  * **Method**: `POST`
+
+  * **Request Body**: No request body is required. The API uses the **refresh token** automatically sent in the `HttpOnly` cookie with the request.
+
+  * **Response**: Returns a JSON object with the same structure as the `/auth/login` endpoint, providing a new access token and its expiration time.
+
+      * **Header**: The `HttpOnly` refresh token cookie may be updated.
+      * **Body**:
+
+    <!-- end list -->
+
+    ```json
+    {
+      "user": {
+        "id": 16,
+        "email": "z4@gmail.com",
+        "name": "z4",
+        "roles": [
+          "ROLE_USER"
+        ]
+      },
+      "accessToken": "jwt_token",
+      "expiresIn": 900
+    }
+    ```
+
+    ## Development
+    - Clone this repo
+    - Install dependency
+    ```bash
+    npm install
+    ```
+    - Run Frontend app
+    ```bash
+    npm run dev
+    ```
+    - Run backend
+
+
+
