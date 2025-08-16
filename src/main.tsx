@@ -23,6 +23,7 @@ async function bootstrap() {
     useAuthStore.getState().reset();
   } finally {
     useAuthStore.getState().setInitialized(true);
+
   }
 }
 

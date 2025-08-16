@@ -8,6 +8,7 @@ type AuthState = {
   setAccessToken: (t: string | null) => void;
   setUser: (u: AuthState["user"]) => void;
   setInitialized: (v: boolean) => void;
+
   reset: () => void;
 };
 
@@ -20,6 +21,7 @@ export const useAuthStore = create<AuthState>()(
       setAccessToken: (t) => set({ accessToken: t }),
       setUser: (u) => set({ user: u }),
       setInitialized: (v) => set({ initialized: v }),
+
       reset: () => set({ accessToken: null, user: null }),
     }),
     {
