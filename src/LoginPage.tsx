@@ -1,16 +1,16 @@
 // src/features/auth/LoginPage.tsx
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "./stores/auth";
 import { LoginForm } from "./features/auth/LoginForm";
+import { useAuthStore } from "./stores/auth";
 
 export function LoginPage() {
   const navigate = useNavigate();
   const token = useAuthStore((s) => s.accessToken);
 
-  // Nếu đã login thì tự chuyển qua dashboard
-  if (token) {
-    navigate("/");
-  }
+  useEffect(() => {
+    if (token) navigate("/");
+  }, [token, navigate]);
 
   const handleSuccess = () => {
     navigate("/"); // chuyển vào dashboard sau khi login thành công
@@ -23,3 +23,4 @@ export function LoginPage() {
     </div>
   );
 }
+
