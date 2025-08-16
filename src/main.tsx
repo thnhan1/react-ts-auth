@@ -6,12 +6,14 @@ import { queryClient } from "./lib/queryClient";
 import { useAuthStore } from "./stores/auth";
 
 async function bootstrap() {
-  await new Promise((resolve) => {
-    const unsub = useAuthStore.persist.onFinishHydration(() => {
-      unsub();
-      resolve(null);
+  if (!useAuthStore.persist.hasHydrated()) {
+    await new Promise((resolve) => {
+      const unsub = useAuthStore.persist.onFinishHydration(() => {
+        unsub();
+        resolve(null);
+      });
     });
-  });
+  }
 
   try {
     const res = await api.post("/auth/refresh", {}, { timeout: 5000 });
