@@ -1,3 +1,5 @@
+# I am backend developer and learn React by using google, copilot, Docs
+
 ## React TS Auth with Context API
 This project provides a robust and secure authentication solution for React applications. It leverages TypeScript, the Context API, and a custom useAuth hook to manage user authentication state in a clean and efficient way.
 
