@@ -8,7 +8,7 @@ export function ProtectedRoute() {
   }));
 
   if (!initialized) {
-    return <div />;
+    return <div>Loading...</div>;
   }
 
   return accessToken ? <Outlet /> : <Navigate to="/login" replace />;

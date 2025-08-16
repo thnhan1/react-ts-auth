@@ -14,7 +14,7 @@ async function bootstrap() {
   });
 
   try {
-    const res = await api.post("/auth/refresh", {});
+    const res = await api.post("/auth/refresh", {}, { timeout: 5000 });
     useAuthStore.getState().setAccessToken(res.data.accessToken);
     if (res.data.user) {
       useAuthStore.getState().setUser(res.data.user);
@@ -23,7 +23,6 @@ async function bootstrap() {
     useAuthStore.getState().reset();
   } finally {
     useAuthStore.getState().setInitialized(true);
-
   }
 }
 

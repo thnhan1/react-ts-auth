@@ -18,7 +18,7 @@ export function LoginPage() {
   };
 
   if (!initialized) {
-    return <div />;
+    return <div>Loading...</div>;
   }
 
   return (
