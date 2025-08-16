@@ -17,7 +17,7 @@ api.interceptors.request.use((config) => {
 const refreshAuthLogic = async (failedRequest: AxiosError) => {
   try {
     const res = await axios.post(
-      `${import.meta.env.VITE_API_URL}/auth/refresh`,
+      `/auth/refresh`,
       {},
       { withCredentials: true },
     );

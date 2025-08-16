@@ -1,8 +1,8 @@
 // src/features/auth/LoginPage.tsx
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { LoginForm } from "./features/auth/LoginForm";
-import { useAuthStore } from "./stores/auth";
+import { LoginForm } from "../features/auth/LoginForm";
+import { useAuthStore } from "../stores/auth";
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="login-form-bg flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-xl font-bold mb-4">Login</h1>
       <LoginForm onSuccess={handleSuccess} />
     </div>

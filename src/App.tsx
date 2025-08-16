@@ -1,28 +1,14 @@
 // src/App.tsx
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, RouterProvider } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { LoginPage } from "./LoginPage";
+import { LoginPage } from "./pages/LoginPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { SettingsPage } from "./pages/SettingsPage";
-
+import router from "./router";
 export default function App() {
+
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Route login */}
-        <Route path="/login" element={<LoginPage />} />
-
-        {/* Các route cần đăng nhập */}
-        <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-        </Route>
-
-        {/* Fallback 404 */}
-        <Route path="*" element={<div>Not Found</div>} />
-      </Routes>
-    </BrowserRouter>
-  );
+    <RouterProvider router={router} />
+  )
 }

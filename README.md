@@ -1,5 +1,5 @@
 ## React TS Auth with Context API
-This project provides a robust and secure authentication solution for React applications. It leverages TypeScript, the Context API, and a custom useAuth hook to manage user authentication state in a clean and efficient way.
+- Branch Zustand auth state
 
 ### Key Features
 - Global State Management: A custom useAuth hook combined with the Context API makes authentication state (isLoggedIn, user, etc.) accessible to any component in your application. This eliminates prop drilling and simplifies state management.

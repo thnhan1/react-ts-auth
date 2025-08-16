@@ -2,10 +2,9 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "../stores/auth";
 
 export function ProtectedRoute() {
-  const { accessToken, initialized } = useAuthStore((s) => ({
-    accessToken: s.accessToken,
-    initialized: s.initialized,
-  }));
+  // Select slices separately to avoid creating a new object each render
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const initialized = useAuthStore((s) => s.initialized);
 
   if (!initialized) {
     return <div>Loading...</div>;

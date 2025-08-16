@@ -4,6 +4,7 @@ import App from "./App";
 import { api } from "./lib/api";
 import { queryClient } from "./lib/queryClient";
 import { useAuthStore } from "./stores/auth";
+import './index.css'
 
 async function bootstrap() {
   if (!useAuthStore.persist.hasHydrated()) {

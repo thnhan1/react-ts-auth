@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+
+.login-form-bg {
+    background-image: url('/public/download.jpg');
+    background-size: auto;
+    background-position: center;
+}
