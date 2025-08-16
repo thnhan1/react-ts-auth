@@ -7,14 +7,19 @@ import { useAuthStore } from "./stores/auth";
 export function LoginPage() {
   const navigate = useNavigate();
   const token = useAuthStore((s) => s.accessToken);
+  const initialized = useAuthStore((s) => s.initialized);
 
   useEffect(() => {
-    if (token) navigate("/");
-  }, [token, navigate]);
+    if (initialized && token) navigate("/");
+  }, [initialized, token, navigate]);
 
   const handleSuccess = () => {
     navigate("/"); // chuyển vào dashboard sau khi login thành công
   };
+
+  if (!initialized) {
+    return <div />;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">

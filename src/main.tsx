@@ -6,6 +6,13 @@ import { queryClient } from "./lib/queryClient";
 import { useAuthStore } from "./stores/auth";
 
 async function bootstrap() {
+  await new Promise((resolve) => {
+    const unsub = useAuthStore.persist.onFinishHydration(() => {
+      unsub();
+      resolve(null);
+    });
+  });
+
   try {
     const res = await api.post("/auth/refresh", {});
     useAuthStore.getState().setAccessToken(res.data.accessToken);
@@ -14,6 +21,9 @@ async function bootstrap() {
     }
   } catch {
     useAuthStore.getState().reset();
+  } finally {
+    useAuthStore.getState().setInitialized(true);
+
   }
 }
 
