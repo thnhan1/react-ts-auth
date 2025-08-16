@@ -1,7 +1,10 @@
 // src/App.tsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { LoginPage } from "./LoginPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { LoginPage } from "./LoginPage";
+import { DashboardPage } from "./pages/DashboardPage";
+import { ProfilePage } from "./pages/ProfilePage";
+import { SettingsPage } from "./pages/SettingsPage";
 
 export default function App() {
   return (
@@ -12,8 +15,9 @@ export default function App() {
 
         {/* Các route cần đăng nhập */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<div> Dash board</div>} />
-          <Route path="/profile" element={<div>Profile page</div>} />
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Route>
 
         {/* Fallback 404 */}
