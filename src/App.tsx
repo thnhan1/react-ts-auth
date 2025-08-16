@@ -1,30 +1,24 @@
-import React from 'react';
-import { AuthProvider } from './auth/AuthContext';
-import LoginPage from './pages/LoginPage';
-import ProtectedRoute from './components/ProtectedRoute';
-import LogoutButton from './components/LogoutButton';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+// src/App.tsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { LoginPage } from "./LoginPage";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: (
-      <ProtectedRoute>
-        <div>Trang bảo vệ - chỉ truy cập khi đăng nhập</div>
-        <LogoutButton />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/login',
-    element: <LoginPage />,
-  },
-]);
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* Route login */}
+        <Route path="/login" element={<LoginPage />} />
 
-const App = () => (
-  <AuthProvider>
-    <RouterProvider router={router} />
-  </AuthProvider>
-);
+        {/* Các route cần đăng nhập */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<div> Dash board</div>} />
+          <Route path="/profile" element={<div>Profile page</div>} />
+        </Route>
 
-export default App;
+        {/* Fallback 404 */}
+        <Route path="*" element={<div>Not Found</div>} />
+      </Routes>
+    </BrowserRouter>
+  );
+}

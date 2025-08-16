@@ -1,20 +1,9 @@
 import React from 'react';
-import { useAuth } from '../auth/AuthContext';
+import { useAuthStore } from '../stores/auth';
+import { Navigate, Outlet } from 'react-router-dom';
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+export function ProtectedRoute() {
+  const token = useAuthStore((s) => s.accessToken);
 
-  if (isLoading) {
-    // Hiển thị loading khi trạng thái xác thực chưa hoàn tất
-    return null;
-  }
-
-  if (!isAuthenticated) {
-    return <div>Bạn cần đăng nhập để truy cập!</div>;
-  }
-  
-
-  return <>{children}</>;
-};
-
-export default ProtectedRoute;
+  return token ? <Outlet /> : <Navigate to={"/login"} replace />;
+}
