@@ -23,7 +23,7 @@ export function LoginForm({ onSuccess }: Props) {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const res = await api.post("/auth/login", data);
+      const res = await api.post("/api/auth/login", data);
       setAccessToken(res.data.accessToken);
       setUser(res.data.user ?? null);
       onSuccess?.();
